@@ -14,6 +14,9 @@ $db = new MyDB();
 $result = $db->query('SELECT * FROM data_usage ORDER BY id desc LIMIT 1');
 $row = $result->fetchArray();
 
+$resultUsage = $db->query('SELECT * FROM data_usage GROUP BY date');
+
+
 ?>
 
 
@@ -73,7 +76,81 @@ $row = $result->fetchArray();
     <?php } ?>
     <p align="center" class="lead">as of <?php print $row['date'] ?></p>
     <p align="center" class="lead"><i>Refresh this page every <strong> 5 minutes</strong> to see your remaining data. </i></p>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Usage</th>
+        <th>Remaining</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php $previousUsage = 0;$i = 0; while($rowUsage = $resultUsage->fetchArray()){  
+        
+      ?>
+      <tr>
+        <td><?php print $rowUsage['date'] ?></td>
+        <td>
+
+          <?php if ($i == 0) { print "N/A"; };
+
+          // 1GB = 1024 MB
+          if( $i > 0 && strpos($rowUsage['remaining_data'], "GB" )) { 
+
+            $previous =  ($previousUsage - (int) ($rowUsage['remaining_data'] * 1024)) / 1024  ; 
+            if ($previous * 1024 > 1023) {
+              // show in GB format
+              print number_format($previous,2) . " GB";
+
+            } else { 
+              // show in MB format
+              print number_format(abs($previous)) . " MB";
+            }
+          }
+
+          if( $i > 0 && strpos($rowUsage['remaining_data'], "MB" )) { 
+
+            // check if the result would be in GB format or in MB already
+            $remaining = ($previousUsage - (int) ($rowUsage['remaining_data'])) / 1024;
+            if ((int) $remaining * 1024 > 1023) {
+
+              // output would still be in GB
+              print number_format($remaining,2) . " GB";
+            } 
+
+            if ((int) $remaining * 1024 < 1024 ) {
+           
+              // output would be in MB
+             if ( $remaining * 1024 > 0 ) {
+              print number_format($remaining * 1024) . " MB";
+             } 
+            } 
+           
+          }
+          
+          ?>
+          
+          </td>
+        <td><?php print $rowUsage['remaining_data'] ?></td>
+      </tr>
+      <?php 
+        if (strpos($rowUsage['remaining_data'], "MB" )) {
+
+          $previousUsage = (int) $rowUsage['remaining_data'];
+          
+        } else {
+          
+          // convert GB to MB
+          $previousUsage = (int) $rowUsage['remaining_data'] * 1024; 
+        }
+        $i++; 
+      } 
+      ?>
+    </tbody>
+  </table>
   </div>
+
+
 </main>
 
 <footer class="footer mt-auto py-3 bg-light">

@@ -18,9 +18,10 @@ mobile_number = "9760854852"
 def getDataUsage():
 
     options = FirefoxOptions()
-    driver = webdriver.Firefox()
-    # options.add_argument("--headless")
-    # driver = webdriver.Firefox(options=options)
+    # driver = webdriver.Firefox()
+    # options.binary_location = '/usr/local/bin/geckodriver'
+    options.add_argument("--headless")
+    driver = webdriver.Firefox(options=options)
 
     driver.get("https://www.gomo.ph/sign-in.html")
 
