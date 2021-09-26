@@ -11,7 +11,7 @@ class MyDB extends SQLite3
 
 $db = new MyDB();
 
-$result = $db->query('SELECT * FROM data_usage ORDER BY id desc LIMIT 1');
+$result = $db->query('SELECT * FROM data_usage ORDER BY rowid desc LIMIT 1');
 $row = $result->fetchArray();
 
 $resultUsage = $db->query('SELECT * FROM data_usage GROUP BY date');
