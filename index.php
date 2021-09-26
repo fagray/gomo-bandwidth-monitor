@@ -75,7 +75,7 @@ $resultUsage = $db->query('SELECT * FROM data_usage GROUP BY date');
     <h1 align="center" class="mt-5">You still have <strong> <?php print $row['remaining_data'] ?></strong></h1>
     <?php } ?>
     <p align="center" class="lead">as of <?php print $row['date'] ?></p>
-    <p align="center" class="lead"><i>Refresh this page every <strong> 5 minutes</strong> to see your remaining data. </i></p>
+    <p align="center" class="lead"><i>This page updates <strong> daily</strong> to monitor your data usage and your remaining data allocation. </i></p>
     <table class="table">
     <thead>
       <tr>
