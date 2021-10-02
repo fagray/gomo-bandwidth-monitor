@@ -20,7 +20,8 @@ def getDataUsage():
     options = FirefoxOptions()
     # driver = webdriver.Firefox()
     # options.binary_location = '/usr/local/bin/geckodriver'
-    options.add_argument("--headless")
+    # options.add_argument("--headless")
+    options.headless = True
     driver = webdriver.Firefox(options=options)
 
     driver.get("https://www.gomo.ph/sign-in.html")
@@ -60,9 +61,9 @@ def getDataUsage():
     elemDataRemainingAsOf = driver.find_element_by_class_name("data-usage__item-content-desc").text
     
     print(elemDataRemaining + " as of " + elemDataRemainingAsOf)
-    file1 = open("usage.txt","w")
-    file1.write(elemDataRemaining + " " + elemDataRemainingAsOf)
-    file1.close()
+    # file1 = open("usage.txt","w")
+    # file1.write(elemDataRemaining + " " + elemDataRemainingAsOf)
+    # file1.close()
 
     print("data:" + elemDataRemaining)
     print("date:" + elemDataRemainingAsOf)
@@ -82,7 +83,7 @@ def getDataUsage():
 
     print(as_of)
 
-    driver.close()
+    driver.quit()
 
 def setup():
 
